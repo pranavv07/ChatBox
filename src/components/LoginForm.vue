@@ -7,9 +7,11 @@
           <label>Email</label>
           <v-text-field
             placeholder="example@mail.com"
-            outline
+            variant="outlined"
             v-model="email.value.value"
             :error-messages="email.errorMessage.value"
+            density="compact"
+            class="my-1"
           ></v-text-field>
         </div>
         <v-btn class="w-100 login-btn" type="submit">Log in</v-btn>
@@ -20,8 +22,8 @@
 <script>
 import { useField, useForm } from "vee-validate";
 export default {
-  emits: ['submit'],
-  setup(props,ctx) {
+  emits: ["submit"],
+  setup(props, ctx) {
     const { handleSubmit } = useForm({
       validationSchema: {
         email(value) {
@@ -30,14 +32,14 @@ export default {
         },
       },
     });
-    const email = useField('email')
+    const email = useField("email");
 
-    const submit = handleSubmit(async values => {
-      ctx.emit('submit', values.email)
-    })
+    const submit = handleSubmit(async (values) => {
+      ctx.emit("submit", values.email);
+    });
     return {
       email,
-      submit
+      submit,
     };
   },
 };
@@ -50,7 +52,7 @@ export default {
 }
 .login-form-container {
   width: 459px;
-  height: 350px;
+  height: 330px;
   border-radius: 8px;
   background: var(--bg-primary, #fff);
   display: block;
@@ -61,7 +63,7 @@ export default {
   margin-bottom: 40px;
 }
 .login-btn {
-  margin: 40px 0;
+  margin: 20px 0;
   background-color: #6c69ff;
   color: #ffffff;
 }

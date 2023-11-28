@@ -1,20 +1,20 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { useStorage } from '@vueuse/core';
 
-export const useUserStore = defineStore('user', () => {
-    const isLoggedIn = ref(false);
-    const chatbox = ref([]);
-    const user = ref("");
-    
-    function login(email) {
-            this.user = email;
+export const useUserStore = defineStore({
+    id: "user",
+    state: () => ({
+        isLoggedIn: useStorage('isLoggedIn', false),
+        email: useStorage('email', null)
+    }),
+    actions: {
+        login(email) {
+            this.email = email;
             this.isLoggedIn = true;
+        },
+        logout() {
+            this.email = null;
+            this.isLoggedIn = false;
+        }
     }
-    return{
-        isLoggedIn,
-        chatbox,
-        user,
-        login
-    }
-
 })
