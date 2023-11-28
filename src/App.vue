@@ -1,20 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar v-if="isLoggedIn">
-      <v-avatar :tile="true">
-        <img :src="require('@/assets/logo.svg')" alt="logo" />
-      </v-avatar>
-      <v-app-bar-title>
-        <v-text-field
-          box
-          label="Append"
-          append-icon="mdi-search"
-          class="w-50"
-        ></v-text-field>
-      </v-app-bar-title>
-      <v-spacer></v-spacer>
-      <v-avatar :tile="true" color="secondary" size="56"> </v-avatar>
-    </v-app-bar>
+    <Header :isLoggedIn="isLoggedIn" :email="email" @logout="signOut"></Header>
     <v-main>
       <v-container class="pa-0" fluid>
         <router-view></router-view>
@@ -27,25 +13,33 @@
 import { useUserStore } from "@/store";
 import { computed, watch } from 'vue';
 import router from "@/router/index.js";
+import Header from "@/components/Header.vue";
 export default {
   name: "App",
-  components: {},
+  components: {
+    Header
+  },
   setup() {
-    const store = useUserStore();
-    const isLoggedIn = computed(()=> store.isLoggedIn);
+    const store = useUserStore()
+    const isLoggedIn = computed(()=> store.isLoggedIn)
+    const email = computed(()=> store.email)
+
+    function signOut() {
+      store.logout();
+    }
 
     watch(isLoggedIn, (signIn)=>{
       if(signIn)
         router.push('/');
+      else 
+        router.push('/login');
     })
+
     return {
-      isLoggedIn
+      isLoggedIn,
+      email,
+      signOut
     };
   }
 };
 </script>
-<style scoped>
-.nav-bar {
-  box-shadow: 2px 4px 36px 0px rgba(10, 5, 255, 0.16);
-}
-</style>
