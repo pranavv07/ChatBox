@@ -60,7 +60,7 @@ export default {
   flex-shrink: 0;
 }
 .left-container {
-  background: var(--bg-primary, #fff);
+  background-color: #fff;
   box-shadow: 2px 4px 36px 0px rgba(10, 5, 255, 0.16);
   width: 756px;
   height: 100vh;
@@ -77,31 +77,19 @@ export default {
 }
 .title {
   color: var(--text-1, #393640);
-  font-family: Work Sans;
   font-size: 48px;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
   margin: 10px 0;
 }
 .subtitle {
   color: var(--text-1, #393640);
-  font-family: Work Sans;
   font-size: 32px;
-  font-style: normal;
   font-weight: 600;
-  line-height: normal;
   margin: 20px 0;
 }
 .paragraph {
-  color: var(--text-1, #393640);
+  color:#393640;
   text-align: center;
-  font-family: Work Sans;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: -0.224px;
   width: 606.59px;
   height: 82.323px;
   flex-shrink: 0;
