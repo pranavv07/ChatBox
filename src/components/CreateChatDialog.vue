@@ -1,51 +1,79 @@
 <template>
-  <v-dialog width="500">
-    <template v-slot:activator="{ props }">
-      <v-btn
-        class="create-chat-btn"
-        density="compact"
-        icon="mdi-plus"
-        v-bind="props"
-      ></v-btn>
-    </template>
-
-    <template v-slot:default>
-      <v-card title="Create a Chat" append-icon="mdi-close" @click:append="closeDialog">
-        <v-card-text>
-          Chats are where your circle communicates. They’re best when organized
-          around a topic — #Writing, for example.
-        </v-card-text>
-        <div>
-          <div class="create-chat-body">
-            <label class="name-label text-cener">Name</label>
-            <v-text-field
-              class="chat-input-field pa-3"
-              placeholder="# e.g. Writing"
-              outline
-            ></v-text-field>
-          </div>
+  <v-dialog v-model="showChatBox" activator="parent" width="500">
+    <v-card>
+      <v-card-item>
+        <v-card-title> Create a Chat </v-card-title>
+        <template v-slot:append>
+          <v-icon icon="mdi-close" @click="closeDialog"></v-icon>
+        </template>
+      </v-card-item>
+      <v-card-text>
+        Chats are where your circle communicates. They’re best when organized
+        around a topic — #Writing, for example.
+      </v-card-text>
+      <v-form @submit.prevent="submit">
+        <div class="create-chat-body">
+          <label class="name-label text-cener">Name</label>
+          <v-text-field
+            class="chat-input-field pa-3"
+            placeholder="# e.g. Writing"
+            variant="outlined"
+            density="compact"
+            :error-messages="chatName.errorMessage.value"
+            v-model="chatName.value.value"
+          ></v-text-field>
         </div>
         <v-card-actions>
-          <v-btn class="chat-action-btns w-100">Create</v-btn>
+          <v-btn class="chat-action-btns w-100" type="submit">Create</v-btn>
         </v-card-actions>
-      </v-card>
-    </template>
+      </v-form>
+    </v-card>
   </v-dialog>
 </template>
-
 <script>
+import { useField, useForm } from "vee-validate";
 import { toRef } from "vue";
+import moment from "moment";
 export default {
   name: "ChatBoxDialog",
   props: ["dialog"],
-  setup(props) {
-    const showChatBox = toRef(props.dialog)
-    function closeDialog(){
-      console.log("Hello");
+  emits: ["create-chat"],
+  setup(props, ctx) {
+    const showChatBox = toRef(props.dialog);
+
+    const { handleSubmit } = useForm({
+      validationSchema: {
+        chatName(value) {
+          if (value) return true;
+          return "Must be a valid field.";
+        },
+      },
+    });
+
+    const chatName = useField("chatName");
+    
+    const submit = handleSubmit(async (values) => {
+      let userObj = {
+        name: values.chatName,
+        created_at: moment().format("DDMMMYYYY"),
+        messages: [],
+      };
+      ctx.emit("create-chat", userObj);
+      setTimeout(()=>{
+        closeDialog();
+      },200)
+    });
+
+    function closeDialog() {
+      showChatBox.value = false;
     }
+
     return {
+      chatName,
       showChatBox,
-      closeDialog
+      closeDialog,
+      handleSubmit,
+      submit
     };
   },
 };
