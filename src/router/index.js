@@ -6,7 +6,7 @@ const routes = [
   {
     path: "/",
     name: "ChatBox",
-    component: () => import("../views/ChatBox"),
+    component: () => import("../views/ChatView"),
   },
   {
     path: "/login",
