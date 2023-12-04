@@ -1,25 +1,40 @@
 <template>
-  <v-app-bar v-if="isLoggedIn">
+  <v-app-bar v-if="$route.name !== 'Login' && isLoggedIn">
     <v-row class="ma-1" align="center">
       <v-col cols="6" class="d-flex align-center">
         <v-avatar :tile="true" class="mx-1" size="50">
           <img :src="require('@/assets/head-logo.svg')" alt="logo" />
         </v-avatar>
-        <v-responsive class="ma-0 pa-0 mx-1" max-width="400px">
+        <v-responsive class="ma-0 pa-0 mx-1" max-width="368px">
           <v-text-field
             variant="outlined"
             placeholder="Search"
             density="compact"
             hide-details
-            append-icon="mdi-search"
-            class="mx-2"
+            append-inner-icon="mdi-magnify"
+            class="mx-2 search-input-field"
+            clearable
           ></v-text-field>
         </v-responsive>
       </v-col>
       <v-col cols="6" class="d-flex justify-end align-center">
-        <v-avatar :tile="true" color="#9C9B9F" size="50" @click="$emit('logout')">
-          <span>{{ getFirstLetter }}</span>
-        </v-avatar>
+        <v-menu>
+          <template v-slot:activator="{ props }">
+            <v-avatar
+              :tile="true"
+              color="#9C9B9F"
+              size="50"
+              v-bind="props"
+            >
+              <span>{{ getFirstLetter }}</span>
+            </v-avatar>
+          </template>
+          <v-list>
+            <v-list-item>
+              <v-list-item-title @click="$emit('logout')">Logout</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </v-col>
     </v-row>
   </v-app-bar>
@@ -36,3 +51,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.search-input-field {
+  border-radius: 8px;
+  background-color: #eceef3;
+}
+</style>
