@@ -14,6 +14,7 @@
             append-inner-icon="mdi-magnify"
             class="mx-2 search-input-field"
             clearable
+            v-model="searchChat"
           ></v-text-field>
         </v-responsive>
       </v-col>
@@ -40,12 +41,22 @@
   </v-app-bar>
 </template>
 <script>
-import { computed } from "vue";
+import { ref, computed, watch } from "vue";
+import { useUserStore } from '@/store';
 export default {
   props: ["isLoggedIn", "email"],
   setup(props) {
+    const store = useUserStore();
+    const searchChat = ref("");
     const getFirstLetter = computed(() => props.email.toUpperCase().charAt(0));
+
+   watch(searchChat, (val) => {
+      if(val.length > 2 || !val) {
+        store.updateSearch(val);
+      }
+   })
     return {
+      searchChat,
       getFirstLetter,
     };
   },

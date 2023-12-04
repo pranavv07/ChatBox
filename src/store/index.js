@@ -1,11 +1,13 @@
 import { defineStore } from "pinia";
 import { useStorage } from "@vueuse/core";
+import { ref } from "vue";
 
 export const useUserStore = defineStore({
   id: "user",
   state: () => ({
     isLoggedIn: useStorage("isLoggedIn", false),
     email: useStorage("email", null),
+    search: ref(""),
     chats: useStorage("chats", [
       {
         name: "Coding Pals",
@@ -65,6 +67,9 @@ export const useUserStore = defineStore({
       },
     ]),
   }),
+  getters: {
+    filterChat: (state) => state.chats.filter(chat=> chat.name.toLowerCase().includes(state.search.toLowerCase())),
+  },
   actions: {
     login(email) {
       this.email = email;
@@ -77,5 +82,8 @@ export const useUserStore = defineStore({
     addChat(userObj) {
       this.chats.push(userObj);
     },
+    updateSearch(search) {
+      this.search = search;
+    }
   },
 });

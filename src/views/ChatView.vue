@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row no-gutter>
       <v-col cols="4" class="pa-0 ma-0">
-        <ChatList :chats="chats" @selected-chat="handleSelectedChat"></ChatList>
+        <ChatList :chats="filterChats" @selected-chat="handleSelectedChat"></ChatList>
       </v-col>
       <v-col cols="8" class="pa-0 ma-0">
         <ChatBox :selectedChat="selectedChat" :chats="chats"></ChatBox>
@@ -25,6 +25,7 @@ export default {
     const receivedChatData = ref(null)
 
     const chats = computed(()=> store.chats)
+    const filterChats = computed(()=> store.filterChat);
     const selectedChat = computed(()=> receivedChatData.value)
 
     function handleSelectedChat(data) {
@@ -33,6 +34,7 @@ export default {
 
     return {
       chats,
+      filterChats,
       selectedChat,
       receivedChatData,
       handleSelectedChat
